@@ -5,7 +5,6 @@ exports.config = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
-    baseUrl: 'https://pastebin.com/',
     //
     // ==================
     // Specify Test Files
@@ -44,7 +43,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -61,7 +60,7 @@ exports.config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:
@@ -87,6 +86,7 @@ exports.config = {
     // gets prepended directly.
     // baseUrl: 'http://localhost:8080',
     //
+    baseUrl: 'https://pastebin.com/',
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
     //
@@ -187,6 +187,13 @@ exports.config = {
      */
     // before: function (capabilities, specs) {
     // },
+    before: function (capabilities, specs) {
+        browser.addCommand("customClick", async function(selector) {
+            const element = await $(selector);
+            await element.waitForClickable({ timeout: 5000 });
+            await element.click();
+        });
+    }
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name
